@@ -29,12 +29,23 @@ class AsteroidField(pygame.sprite.Sprite):
     ]
 
     def __init__(self):
-        pygame.sprite.Sprite.__init__(self, self.containers)
+        if hasattr(AsteroidField, 'containers'):
+            pygame.sprite.Sprite.__init__(self, self.containers)
+            for group in AsteroidField.containers:
+                group.add(self)
+        else:
+            pygame.sprite.Sprite.__init__(self)
+    
         self.spawn_timer = 0.0
 
     def spawn(self, radius, position, velocity):
         asteroid = Asteroid(position.x, position.y, radius)
         asteroid.velocity = velocity
+
+        if hasattr(Asteroid, 'containers'):
+            for group in Asteroid.containers:
+                if asteroid not in group:
+                    group.add(asteroid)
 
     def update(self, dt):
         self.spawn_timer += dt

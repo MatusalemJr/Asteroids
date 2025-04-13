@@ -1,13 +1,12 @@
 import pygame
 
-# Base class for game objects
 class CircleShape(pygame.sprite.Sprite):
     def __init__(self, x, y, radius):
-        # we will be using this later
-        if hasattr(self, "containers"):
-            super().__init__(self.containers)
+        current_class = self.__class__
+        if hasattr(current_class, "containers"):
+            pygame.sprite.Sprite.__init__(self, current_class.containers)
         else:
-            super().__init__()
+            pygame.sprite.Sprite.__init__(self)
 
         self.position = pygame.Vector2(x, y)
         self.velocity = pygame.Vector2(0, 0)

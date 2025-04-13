@@ -7,6 +7,7 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS)
 
         self.rotation = 0
+        self.shot_cooldown = 0
 
         if hasattr(Player, 'containers'):
             for group in Player.containers:
@@ -28,7 +29,7 @@ class Player(CircleShape):
 
     def update(self, dt):
         keys = pygame.key.get_pressed()
-        
+
         if keys[pygame.K_a]:
            self.rotate(-dt)
 
@@ -41,8 +42,14 @@ class Player(CircleShape):
         if keys[pygame.K_s]:
             self.move(-dt)
         
+        if self.shot_cooldown > 0:
+            self.shot_cooldown -= dt
+
         if keys[pygame.K_SPACE]:
-            self.shoot()
+            if self.shot_cooldown <= 0:
+                self.shoot()
+                self.shot_cooldown = PLAYER_SHOOT_COOLDOWN
+
 
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)

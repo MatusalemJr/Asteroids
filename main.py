@@ -15,12 +15,16 @@ def main():
     
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     screen_colour = (0, 0, 0)
+    
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    Player.containers = (updatable, drawable)
 
     player = Player(
         x=SCREEN_WIDTH / 2,  
         y=SCREEN_HEIGHT / 2
     )
-    
+
     while running:
         # Calculate dt at the beginning of each frame
         dt = clock.tick(60) / 1000  # Convert milliseconds to seconds
@@ -31,13 +35,14 @@ def main():
                 running = False
         
         # Update game state
-        player.update(dt)
+        updatable.update(dt)
         
         # Fill screen with black
         screen.fill(screen_colour)
         
         # Draw the player
-        player.draw(screen)
+        for entity in drawable:
+            entity.draw(screen)
         
         # Update the display
         pygame.display.flip()

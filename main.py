@@ -22,6 +22,17 @@ def main():
     )
     
     while running:
+        # Calculate dt at the beginning of each frame
+        dt = clock.tick(60) / 1000  # Convert milliseconds to seconds
+        
+        # Process events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        
+        # Update game state
+        player.update(dt)
+        
         # Fill screen with black
         screen.fill(screen_colour)
         
@@ -30,14 +41,6 @@ def main():
         
         # Update the display
         pygame.display.flip()
-
-        for event in pygame.event.get():
-          if event.type == pygame.QUIT:
-               running = False
-
-        dt = clock.tick(60) / 1000  # Convert milliseconds to seconds
-
-  
 
 if __name__ == "__main__":
     main()
